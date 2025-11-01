@@ -1,0 +1,32 @@
+steps:
+  # step 1 — build image
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/gke-apps/flask-gke:$COMMIT_SHA'
+      - '.'
+
+  # Étape 2 — Push image in Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - 'europe-west1-docker.pkg.dev/$PROJECT_ID/gke-apps/flask-gke:$COMMIT_SHA'
+
+  # Étape 3 — update image in Kubernetes
+  - name: 'gcr.io/cloud-builders/kubectl'
+    env:
+      - 'CLOUDSDK_COMPUTE_ZONE=europe-west1-b'
+      - 'CLOUDSDK_CONTAINER_CLUSTER=gke-portfolio' 
+    args:
+      - 'set'
+      - 'image'
+      - 'deployment/flask-gke'
+      - 'flask-gke=europe-west1-docker.pkg.dev/$PROJECT_ID/gke-apps/flask-gke:$COMMIT_SHA'
+      - '--namespace=dev'
+
+images:
+  - 'europe-west1-docker.pkg.dev/$PROJECT_ID/gke-apps/flask-gke:$COMMIT_SHA'
+
+substitutions:
+  _REGION: "europe-west1"
