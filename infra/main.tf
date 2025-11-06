@@ -63,3 +63,5 @@ resource "google_project_iam_member" "cb_artifact_writer" {
   role    = "roles/artifactregistry.writer"
   member  = "serviceAccount:${google_service_account.cb_deployer.email}"
 }
+
+
