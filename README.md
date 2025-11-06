@@ -1,4 +1,4 @@
-# 🚀 Flask GKE Application – Manual Deployment on Google Kubernetes Engine
+# 🚀 Flask GKE Application – Deployment on Google Kubernetes Engine
 ## 📘 Project Overview
 
 This project is a simple Flask web application containerized with Docker and manually deployed on Google Kubernetes Engine (GKE).
